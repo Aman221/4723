@@ -1,4 +1,5 @@
 package api
+
 // boilerplate code for api.go
 import (
 	"log"
@@ -12,11 +13,11 @@ func SetupRouter() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	// User-related endpoints
-	mux.HandleFunc("/user/", handlers.GetUserHandler)
-	mux.HandleFunc("/user/{id}/calendar", handlers.GetUserCalendarHandler)
-	mux.HandleFunc("/user/{id}/events", handlers.GetUserEventsHandler)
-	mux.HandleFunc("/user/{id}/paymentinformation", handlers.GetUserPaymentHandler)
-	mux.HandleFunc("/user/{id}/endpointapi", handlers.EndpointAPIHandler)
+	mux.HandleFunc("/user", handlers.GetUserHandler)
+	// mux.HandleFunc("/user/{id}/calendar", handlers.GetUserCalendarHandler)
+	// mux.HandleFunc("/user/{id}/events", handlers.GetUserEventsHandler)
+	// mux.HandleFunc("/user/{id}/paymentinformation", handlers.GetUserPaymentHandler)
+	// mux.HandleFunc("/user/{id}/endpointapi", handlers.EndpointAPIHandler)
 
 	return mux
 }
