@@ -42,7 +42,7 @@ export default function Home() {
   const [preFilledEventData, setPreFilledEventData] = useState<any>(null)
   const [calendarMenuOpen, setCalendarMenuOpen] = useState<string | null>(null)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
-  const username = "User" // This would come from authentication in a real app
+  const username = "Aman" // This would come from authentication in a real app
 
   useEffect(() => {
     setIsLoaded(true)
@@ -299,13 +299,13 @@ export default function Home() {
   }
 
   const isToday = (date: Date) => {
-    const today = new Date(2025, 2, 5) // March 5, 2025 as "today" for this app
+    const today = new Date(); // Get the actual current date and time
     return (
       date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
-    )
-  }
+    );
+  };
 
   // Function to render day view
   const renderDayView = () => {
