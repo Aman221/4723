@@ -8,7 +8,7 @@ import (
 
 var DB *sql.DB
 
-func InitUserDB() error {
+func InitDB() error {
 	var err error
 	DB, err = sql.Open("postgres", "postgres://amanuel:@localhost/users?sslmode=disable")
 	return err
