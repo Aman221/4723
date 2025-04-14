@@ -8,8 +8,8 @@ import (
 
 var DB *sql.DB
 
-func InitDB() error {
+func InitUserDB() error {
 	var err error
-	DB, err = sql.Open("postgres", "postgres://amanuel:@localhost/users?sslmode=disable")
+	DB, err = sql.Open("postgres", "postgres://amanuel:@localhost/user_logins?sslmode=disable")
 	return err
 }

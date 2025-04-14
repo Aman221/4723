@@ -1,7 +1,7 @@
 // pages/api/events.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const GO_API_URL = 'http://localhost:8000'; // Adjust if your Go API is running elsewhere
+const GO_API_URL = 'http://localhost:8080'; // Adjust if your Go API is running elsewhere
 
 // Define types to match your Go API responses (adjust as needed)
 interface GoCalendar {

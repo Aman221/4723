@@ -27,9 +27,9 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	row := database.DB.QueryRow("SELECT id, username, email FROM users WHERE id = $1", id)
+	row := database.DB.QueryRow("SELECT id, username, email FROM user WHERE id = $1", id)
 	var user models.User
-	err = row.Scan(&user.ID, &user.Name, &user.Email)
+	err = row.Scan(&user.ID, &user.Username, &user.Email)
 	fmt.Print(err)
 	if err != nil {
 		if err == sql.ErrNoRows {

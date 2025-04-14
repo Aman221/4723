@@ -1,7 +1,16 @@
 package models
 
 type User struct {
-    ID    int    `json:"id"`
-    Name  string `json:"name"`
-    Email string `json:"email"`
+	ID          string `json:"id"`
+	Username    string `json:"username"`
+	Email       string `json:"email"`
+	DateCreated string `json:"date_created"`
+}
+
+type UClient struct {
+	ID          string `json:"id"`
+	Username    string `json:"username"`
+	Password    string `json:"password"`
+	Email       string `json:"email"`
+	DateCreated string `json:"date_created"`
 }

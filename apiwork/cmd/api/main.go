@@ -12,7 +12,7 @@ import (
 
 func main() {
 	r := mux.NewRouter()
-	err := database.InitDB()
+	err := database.InitUserDB()
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
@@ -20,6 +20,7 @@ func main() {
 
 	// Define user-related endpoints
 	r.HandleFunc("/user/{id}", handlers.GetUserHandler)
+	r.HandleFunc("/login/{username}+{password}", handlers.LoginHandler)
 	// mux.HandleFunc("/user/{id}/calendar", handlers.GetUserCalendarHandler)
 	// mux.HandleFunc("/user/{id}/events", handlers.GetUserEventsHandler)
 	// mux.HandleFunc("/user/{id}/paymentinformation", handlers.GetUserPaymentHandler)
