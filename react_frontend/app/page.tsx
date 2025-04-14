@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 // import Image from 'next/image';
 import bcrypt from 'bcryptjs'; // Import bcrypt
 
+const GO_API_URL = 'http://127.0.0.1:8080';
+
 interface Props {
     onLogin?: (userData: any) => void;
     onCreateAccount?: (newUserData: any) => void;
@@ -33,12 +35,8 @@ export default function AuthForm({ onLogin, onCreateAccount }: Props) {
     
         if (mode === 'login') {
             try {
-                const response = await fetch('/api/apiv0/login', { // Updated URL
+                const response = await fetch(`/api/login`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ username }),
                 });
     
                 if (response.ok) {
@@ -59,13 +57,8 @@ export default function AuthForm({ onLogin, onCreateAccount }: Props) {
             // mode === 'create'
             try {
                 const hashedPassword = await hashPassword(password);
-    
-                const response = await fetch('/api/apiv0/create-account', {  // Updated URL
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ username, password: hashedPassword, email }),
+                const response = await fetch(`${GO_API_URL}/create/${username}+${hashedPassword}+${email}`, { //  Construct the URL
+                    method: 'POST', //  Use GET since the Go API expects it in the path
                 });
     
                 if (response.ok) {
@@ -84,6 +77,7 @@ export default function AuthForm({ onLogin, onCreateAccount }: Props) {
             }
         };
     }
+    
 
     const toggleMode = () => {
         setMode(mode === 'login' ? 'create' : 'login');

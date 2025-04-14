@@ -5,6 +5,7 @@ const GO_API_URL = 'http://localhost:8080'; //  Replace with your Go API's URL
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const { username, password } = req.body;
+        console.log(req.body);
 
         //  Validation
         if (!username || !password) {
