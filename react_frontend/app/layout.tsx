@@ -6,8 +6,8 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Lovy-tech | Smart Glasses OS",
-  description: "Advanced e-OS system for smart glasses with real-time performance tracking",
+  title: "Aegis | Secure Communication Suite",
+  description: "End-to-end quantum resistant encrypted suite. All the comforts of modern services with none of the prying eyes and data harvesting.",
     generator: 'v0.dev'
 }
 
@@ -22,6 +22,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-
-import './globals.css'
