@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/lib/pq"
+
 	"github.com/Aman221/4723/internal/database" // Import your database package
 	"github.com/gorilla/mux"                    // Import gorilla mux for route variables
 )
@@ -28,8 +30,28 @@ type CalendarEvent struct {
 	Date        *string  `json:"date,omitempty"` // Use pointer to handle optional field
 }
 
+type NCalendarEvent struct {
+	Title       string   `json:"title"`
+	StartTime   string   `json:"startTime"`
+	EndTime     string   `json:"endTime"`
+	Color       string   `json:"color"`
+	Day         int      `json:"day"`
+	Description string   `json:"description"`
+	Location    string   `json:"location"`
+	Attendees   []string `json:"attendees"`
+	Organizer   string   `json:"organizer"`
+	CalendarID  string   `json:"calendarId"`
+	Date        *string  `json:"date,omitempty"` // Use pointer to handle optional field
+}
+
 type Calendar struct {
 	ID      string `json:"id"`
+	Name    string `json:"name"`
+	Color   string `json:"color"`
+	Visible bool   `json:"visible"`
+}
+
+type NCalendar struct {
 	Name    string `json:"name"`
 	Color   string `json:"color"`
 	Visible bool   `json:"visible"`
@@ -190,7 +212,7 @@ func GetCalendarsHandler(w http.ResponseWriter, r *http.Request) {
 
 // AddCalendarHandler handles requests to add a new calendar
 func AddCalendarHandler(w http.ResponseWriter, r *http.Request) {
-	var newCalendar Calendar
+	var newCalendar NCalendar
 	err := json.NewDecoder(r.Body).Decode(&newCalendar)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -199,8 +221,8 @@ func AddCalendarHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	// Example database insertion (adjust based on your schema)
-	_, err = database.DB.Exec("INSERT INTO calendars (id, name, color, visible) VALUES ($1, $2, $3, $4)",
-		newCalendar.ID, newCalendar.Name, newCalendar.Color, newCalendar.Visible)
+	_, err = database.DB.Exec("INSERT INTO calendars (name, color, visible) VALUES ($1, $2, $3)",
+		newCalendar.Name, newCalendar.Color, newCalendar.Visible)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Database error: %v", err), http.StatusInternalServerError)
 		return
@@ -405,7 +427,7 @@ func SearchEventsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddEventHandler(w http.ResponseWriter, r *http.Request) {
-	var newEvent CalendarEvent
+	var newEvent NCalendarEvent
 	err := json.NewDecoder(r.Body).Decode(&newEvent)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -422,10 +444,11 @@ func AddEventHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	_, err = database.DB.Exec(`
-		INSERT INTO calendar_events (id, title, start_time, end_time, color, day, description, location, attendees, organizer, calendar_id, date)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-	`, newEvent.ID, newEvent.Title, newEvent.StartTime, newEvent.EndTime, newEvent.Color, newEvent.Day, newEvent.Description, newEvent.Location,
-		`[]`, newEvent.Organizer, newEvent.CalendarID, newEvent.Date)
+        INSERT INTO calendar_events (title, start_time, end_time, color, day, description, location, attendees, organizer, calendar_id, date)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+    `, newEvent.Title, newEvent.StartTime, newEvent.EndTime, newEvent.Color, newEvent.Day, newEvent.Description, newEvent.Location,
+		pq.Array(newEvent.Attendees),
+		newEvent.Organizer, newEvent.CalendarID, newEvent.Date)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Database error: %v", err), http.StatusInternalServerError)
 		return
